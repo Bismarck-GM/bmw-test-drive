@@ -3,15 +3,19 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
-import Main from './container/Main';
+import Main from './components/Main';
 import Navbar from './container/Navbar';
-import Home from './components/Home';
+import Models from './container/Models';
 
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
+    primary: {
+      main: 'rgb(22,88,142)',
+    },
     action: {
       selected: '#97BF0F',
     },
@@ -48,7 +52,10 @@ const App = () => {
         />
         <Switch>
           <Main open={drawer}>
-            <Route path="/" exact component={Home} />
+            <Route path="/" exact>
+              <Redirect to="/models" />
+            </Route>
+            <Route path="/models" exact component={Models} />
           </Main>
         </Switch>
 
