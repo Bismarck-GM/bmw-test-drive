@@ -27,15 +27,13 @@ const useStyles = makeStyles((theme) => ({
 const Main = ({ open, children }) => {
   const classes = useStyles();
   return (
-    <>
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        {children}
-      </main>
-    </>
+    <main
+      className={clsx(classes.content, {
+        [classes.contentShift]: open,
+      })}
+    >
+      {children}
+    </main>
   );
 };
 
