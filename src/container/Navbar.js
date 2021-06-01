@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,7 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ReactComponent as BmwLogo } from '../logo.svg';
-import LoginModal from '../components/LoginModal';
+import { openModal } from '../redux/actions';
 
 const drawerWidth = 240;
 
@@ -33,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '30px',
     left: '120px',
+  },
+  menuButtonToggleTheme: {
+    position: 'absolute',
+    top: '30px',
+    left: '190px',
   },
   hide: {
     display: 'none',
@@ -77,13 +83,12 @@ const Navbar = ({
   open,
   handleDrawerOpen,
   handleDrawerClose,
+  handleThemeChange,
 }) => {
   const classes = useStyles();
   const { pathname: location } = useLocation();
 
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const dispatch = useDispatch();
 
   return (
     <div className={classes.root}>
@@ -102,6 +107,15 @@ const Navbar = ({
         <IconButton
           color="inherit"
           className={clsx(classes.menuButtonUser, open && classes.hide)}
+        >
+          <AccountCircleIcon fontSize="large" />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Open User" arrow>
+        <IconButton
+          color="inherit"
+          onClick={handleThemeChange}
+          className={clsx(classes.menuButtonToggleTheme, open && classes.hide)}
         >
           <AccountCircleIcon fontSize="large" />
         </IconButton>
@@ -153,15 +167,12 @@ const Navbar = ({
           </Link>
         </List>
         <Divider />
-        <Button onClick={handleOpenModal} primary>
+        <Button onClick={() => dispatch(openModal('login'))} color="secondary">
           Log In
         </Button>
-        <LoginModal
-          openModal={openModal}
-          handleCloseModal={handleCloseModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        />
+        <Button onClick={() => dispatch(openModal('register'))} color="secondary">
+          Register
+        </Button>
       </Drawer>
     </div>
   );
