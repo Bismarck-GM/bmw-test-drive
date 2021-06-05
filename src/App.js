@@ -9,6 +9,8 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Main from './components/Main';
 import Navbar from './container/Navbar';
 import Models from './container/Models';
+import CarFamily from './container/CarFamily';
+import Car from './container/Car';
 import SnackBar from './components/SnackBar';
 import Modal from './container/Modal';
 
@@ -52,16 +54,7 @@ const lightTheme = createMuiTheme({
 });
 
 const App = () => {
-  const [drawer, setDrawer] = useState(true);
   const [theme, setTheme] = useState(darkTheme);
-
-  const handleDrawerOpen = () => {
-    setDrawer(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawer(false);
-  };
 
   const handleThemeChange = () => {
     if (theme.palette.type === 'dark') {
@@ -74,18 +67,15 @@ const App = () => {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <Navbar
-          open={drawer}
-          handleDrawerOpen={handleDrawerOpen}
-          handleDrawerClose={handleDrawerClose}
-          handleThemeChange={handleThemeChange}
-        />
+        <Navbar handleThemeChange={handleThemeChange} />
         <Switch>
-          <Main open={drawer}>
+          <Main>
             <Route path="/" exact>
               <Redirect to="/models" />
             </Route>
-            <Route path="/models" exact component={Models} />
+            <Route path="/models" exact component={CarFamily} />
+            <Route path="/models/:carFamilyId" exact component={Models} />
+            <Route path="/models/:carFamilyId/:carId" exact component={Car} />
           </Main>
         </Switch>
         <Modal />
