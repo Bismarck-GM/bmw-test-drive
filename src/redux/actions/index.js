@@ -1,9 +1,15 @@
 import Api, {
-  GET_CAR_FAMILIES,
   LOGIN,
   REGISTER,
+  GET_CARS,
+  GET_CAR_FAMILIES,
 } from '../../api';
 import * as types from './types';
+
+export const createCars = (cars) => ({
+  type: types.SET_CARS,
+  payload: cars,
+});
 
 export const createCarFamilies = (carFamily) => ({
   type: types.SET_CAR_FAMILIES,
@@ -14,6 +20,8 @@ export const snackBar = (type, message) => ({
   type,
   payload: message,
 });
+
+export const toggleDrawer = () => ({ type: types.DRAWER_TOGGLE });
 
 export const loginUser = (data) => ({
   type: types.LOGIN_USER,
@@ -40,6 +48,16 @@ export const fetchCarFamilies = () => async (dispatch) => {
   try {
     const { data } = await Api({ ...GET_CAR_FAMILIES() });
     dispatch(createCarFamilies(data));
+  } catch (err) {
+    dispatch(snackBar(types.SNACKBAR_ERROR, 'Could not connect to back-end.'));
+  }
+};
+
+export const fetchAllCars = () => async (dispatch) => {
+  try {
+    const { data } = await Api({ ...GET_CARS() });
+    console.log(data);
+    dispatch(createCars(data));
   } catch (err) {
     dispatch(snackBar(types.SNACKBAR_ERROR, 'Could not connect to back-end.'));
   }

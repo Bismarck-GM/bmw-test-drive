@@ -5,7 +5,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const SET_CAR_FAMILIES = 'SET_CAR_FAMILIES';
 
-export const GET_CARS = 'GET_CARS';
+export const SET_CARS = 'SET_CARS';
 
 export const GET_DEALERSHIPS = 'GET_DEALERSHIPS';
 
@@ -20,3 +20,5 @@ export const MODAL_OPEN = 'MODAL_OPEN';
 export const MODAL_CLOSE = 'MODAL_CLOSE';
 export const FORM_LOADING = 'FORM_LOADING';
 export const FORM_ERROR = 'FORM_ERROR';
+
+export const DRAWER_TOGGLE = 'DRAWER_TOGGLE';
