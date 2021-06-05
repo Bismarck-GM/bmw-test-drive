@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,7 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import { ReactComponent as BmwLogo } from '../logo.svg';
-import { openModal } from '../redux/actions';
+import { openModal, toggleDrawer } from '../redux/actions';
 
 const drawerWidth = 240;
 
@@ -29,16 +29,19 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '30px',
     left: '50px',
+    zIndex: '100',
   },
   menuButtonUser: {
     position: 'absolute',
     top: '30px',
     left: '120px',
+    zIndex: '100',
   },
   menuButtonToggleTheme: {
     position: 'absolute',
     top: '30px',
     left: '190px',
+    zIndex: '100',
   },
   hide: {
     display: 'none',
@@ -79,12 +82,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({
-  open,
-  handleDrawerOpen,
-  handleDrawerClose,
-  handleThemeChange,
-}) => {
+const Navbar = ({ handleThemeChange }) => {
+  const { drawerOpen } = useSelector((state) => state.uiDrawer);
   const classes = useStyles();
   const { pathname: location } = useLocation();
 
@@ -97,8 +96,8 @@ const Navbar = ({
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          className={clsx(classes.menuButton, open && classes.hide)}
+          onClick={() => dispatch(toggleDrawer())}
+          className={clsx(classes.menuButton, drawerOpen && classes.hide)}
         >
           <MenuIcon fontSize="large" />
         </IconButton>
@@ -106,7 +105,7 @@ const Navbar = ({
       <Tooltip title="Open User" arrow>
         <IconButton
           color="inherit"
-          className={clsx(classes.menuButtonUser, open && classes.hide)}
+          className={clsx(classes.menuButtonUser, drawerOpen && classes.hide)}
         >
           <AccountCircleIcon fontSize="large" />
         </IconButton>
@@ -115,7 +114,7 @@ const Navbar = ({
         <IconButton
           color="inherit"
           onClick={handleThemeChange}
-          className={clsx(classes.menuButtonToggleTheme, open && classes.hide)}
+          className={clsx(classes.menuButtonToggleTheme, drawerOpen && classes.hide)}
         >
           <AccountCircleIcon fontSize="large" />
         </IconButton>
@@ -124,7 +123,7 @@ const Navbar = ({
         className={classes.drawer}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={drawerOpen}
         classes={{
           paper: classes.drawerPaper,
         }}
@@ -138,7 +137,7 @@ const Navbar = ({
           <div
             className={classes.drawerCloserContainer}
           >
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton onClick={() => dispatch(toggleDrawer())}>
               <ChevronLeftIcon />
             </IconButton>
           </div>
@@ -146,7 +145,7 @@ const Navbar = ({
         <Divider />
         <List className={classes.navList}>
           <Link to="/models" className={classes.link}>
-            <ListItem button selected={location === '/models'}>
+            <ListItem button selected={location.includes('models')}>
               <ListItemText primary="MODELS" />
             </ListItem>
           </Link>
