@@ -2,7 +2,7 @@ import { SET_CAR_FAMILIES } from '../actions/types';
 
 const initialState = {
   loading: true,
-  cars: [],
+  carFamilies: [],
 };
 
 const carFamilyReducer = (state = initialState, action) => {
@@ -10,7 +10,7 @@ const carFamilyReducer = (state = initialState, action) => {
     case SET_CAR_FAMILIES:
       return {
         loading: false,
-        cars: action.payload,
+        carFamilies: action.payload,
       };
     default:
       return state;
