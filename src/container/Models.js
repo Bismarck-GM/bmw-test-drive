@@ -1,133 +1,147 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
 import {
   makeStyles,
   Typography,
+  Box,
+  Button,
+  Paper,
 } from '@material-ui/core';
-// import Divider from '@material-ui/core/Divider';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper/core';
-import { GrCaretNext, GrCaretPrevious } from 'react-icons/gr';
-import { fetchCarFamilies } from '../redux/actions';
-// import CarFamilySlide from '../components/CarFamilySlide';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.scss';
+import { GrCaretPrevious } from 'react-icons/gr';
+import { fetchAllCars, fetchCarFamilies } from '../redux/actions';
 
-const useStyles = makeStyles(() => ({
-  wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: '0',
-    height: '100%',
-    maxWidth: '100vw',
-    justifySelf: 'center',
-    minWidth: '0',
+const useStyles = makeStyles((theme) => ({
+  carHolder: {
+    '&:not(:last-child)': {
+      marginBottom: theme.spacing(12),
+    },
   },
-  swiperWrapper: {
-    maxWidth: '100%',
-    padding: '0 4rem',
-    position: 'relative',
+  imgLink: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 
 }));
 
-SwiperCore.use([Navigation]);
-
 const Models = () => {
-  const classes = useStyles();
-  const { loading, cars } = useSelector((state) => state.carFamily);
+  const { carFamilyId } = useParams();
+  const carFamilyIdParam = parseInt(carFamilyId, 10);
   const dispatch = useDispatch();
+  const { cars, loading } = useSelector((state) => state.cars);
+  const { carFamilies } = useSelector((state) => state.carFamily);
+  // const { drawerOpen } = useSelector((state) => state.uiDrawer);
+  const classes = useStyles();
+  const currentCars = cars.filter((car) => car.family[0].id === carFamilyIdParam);
+  const currentFamily = carFamilies.filter((family) => family.id === carFamilyIdParam);
+  console.log(Array.isArray(currentFamily), currentFamily);
   React.useEffect(() => {
     if (loading) {
+      console.log('Component did mount');
       dispatch(fetchCarFamilies());
+      dispatch(fetchAllCars());
     }
   }, []);
-
   return (
-    <div className={classes.wrapper}>
-      <Typography variant="h3">
-        LATEST MODELS
-      </Typography>
-      <Typography variant="subtitle1" gutterBottom>
-        Select from any of the Models
-      </Typography>
-      <hr style={{
-        border: 'dotted 5px',
-        width: '10%',
-        borderStyle: 'none none dotted none',
-        color: 'grey',
-        opacity: '30%',
-        marginTop: '2rem',
-        marginBottom: '1rem',
-      }}
-      />
-      <div className={classes.swiperWrapper}>
-        <Swiper
-          className="mySwiper"
-          slidesPerView={1}
-          spaceBetween={0}
-          resizeObserver
-          navigation={{
-            nextEl: '.swiperNext',
-            prevEl: '.swiperPrevious',
-          }}
-          breakpoints={{
-            769: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-          }}
-        >
-          {
-            loading
-              ? (
-                <>
-                  <SwiperSlide style={{ width: '200px', height: '400px', backgroundColor: 'red' }}>Slide 1</SwiperSlide>
-                  <SwiperSlide style={{ width: '200px', height: '400px', backgroundColor: 'red' }}>Slide 2</SwiperSlide>
-                  <SwiperSlide style={{ width: '200px', height: '400px', backgroundColor: 'red' }}>Slide 3</SwiperSlide>
-                </>
-              )
-              : (
-                cars.map((car) => (
-                  <SwiperSlide key={car.id} style={{ width: '100%', position: 'relative' }}>
-                    <img src={car.img_thumb} alt={car.name} style={{ width: '100%' }} />
-                    <Typography variant="h4" align="center" style={{ position: 'absolute', top: '10px', left: '10px' }}>
-                      {car.shortname}
-                    </Typography>
-                    <Typography variant="h5" align="center" gutterBottom>
-                      {car.name}
-                    </Typography>
-                    <hr style={{
-                      border: 'dotted 5px',
-                      width: '30%',
-                      borderStyle: 'none none dotted none',
-                      color: 'grey',
-                      opacity: '30%',
-                      marginTop: '1rem',
-                      marginBottom: '1rem',
-                    }}
-                    />
+    <Box
+      // pl={drawerOpen ? 6 : 20}
+      pt={30}
+      pb={8}
+      position="relative"
+      minWidth="0"
+      maxWidth="100vw"
+      minHeight="100vh"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Box position="absolute" top="0" pt={6} textAlign="center" justifySelf="flex-start">
+        <Box mb={2} mx={4} fontWeight={500} fontSize="h3.fontSize">
+          {currentFamily[0] ? currentFamily[0].name : '' }
+        </Box>
+        <Box fontWeight={500} fontSize="subtitle1" textAlign="center">
+          {currentFamily[0] ? currentFamily[0].description : '' }
+        </Box>
+      </Box>
+      <Box
+        width="100%"
+      >
 
-                    <Typography variant="subtitle2" align="center">
-                      {car.description}
+        {currentCars.map((car) => (
+          <Paper
+            key={car.id}
+            className={classes.carHolder}
+            // variant="outlined"
+            elevation={3}
+          >
+            <Box
+              display="flex"
+              direction="row"
+              justifyContent="space-around"
+              alignItems="stretch"
+              width="100%"
+              ml="auto"
+              p={2}
+            >
+              <Box display="flex" justifyContent="center" width="40%">
+                <Link to={`/models/${carFamilyId}/${car.id}`} className={classes.imgLink}>
+                  <img src={car.img_thumb} alt={car.name} style={{ objectFit: 'contain', width: '100%' }} />
+                </Link>
+              </Box>
+              <Box width="30%">
+                <Box mb={1} fontSize="subtitle2" letterSpacing={6} fontWeight={100}>
+                  {car.model_year}
+                </Box>
+                <Box mb={2} fontWeight={500} fontSize="h6.fontSize">
+                  {car.name}
+                </Box>
+                <Box fontWeight={100} fontSize="subtitle1">
+                  {car.propulsor.name}
+                </Box>
+                <Box mb={2} fontWeight={100} fontSize="subtitle1">
+                  {car.drive.name}
+                </Box>
+                <Box fontWeight={100}>
+                  <Box mr={2} display="inline">
+                    <Typography variant="subtitle1" display="inline">
+                      {car.hp}
                     </Typography>
-                  </SwiperSlide>
-                ))
-              )
-          }
-        </Swiper>
-        <div className="swiperNext">
-          <GrCaretNext />
-        </div>
-        <div className="swiperPrevious">
+                    {' HP'}
+                  </Box>
+                  <Box mr={2} display="inline">
+                    <Typography variant="subtitle1" display="inline">
+                      {car.mpg}
+                    </Typography>
+                    {' MPG'}
+                  </Box>
+                  <Box mr={2} display="inline">
+                    <Typography variant="subtitle1" display="inline">
+                      {`${car.accel} sec`}
+                    </Typography>
+                    {' 0-60 MPH'}
+                  </Box>
+                </Box>
+              </Box>
+              <Box justifySelf="flex-end" width="20%">
+                <Button variant="contained" color="secondary" component={Link} to={`/models/${carFamilyId}/${car.id}`}>
+                  Configurate
+                </Button>
+                <Box mt={2} fontWeight={100} fontSize={16}>
+                  {`MSRP: $${car.msrp}`}
+                </Box>
+              </Box>
+            </Box>
+          </Paper>
+        ))}
+      </Box>
+      <Link to="/models">
+        <div className="swiperPrevious backToModels">
           <GrCaretPrevious />
         </div>
-      </div>
-    </div>
+      </Link>
 
+    </Box>
   );
 };
 
