@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   content: {
-    // backgroundColor: 'rgba(0,149,211, 1)',
     flexGrow: 1,
     transition: theme.transitions.create('', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    height: '100vh',
+    minHeight: '100vh',
     padding: theme.spacing(0, 0),
+    overflow: 'auto',
   },
   contentShift: {
     transition: theme.transitions.create('', {
@@ -24,12 +25,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Main = ({ open, children }) => {
+const Main = ({ children }) => {
   const classes = useStyles();
+  const { drawerOpen } = useSelector((state) => state.uiDrawer);
   return (
     <main
       className={clsx(classes.content, {
-        [classes.contentShift]: open,
+        [classes.contentShift]: drawerOpen,
       })}
     >
       {children}
@@ -38,7 +40,6 @@ const Main = ({ open, children }) => {
 };
 
 Main.propTypes = {
-  open: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
