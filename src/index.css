@@ -12,7 +12,8 @@ code {
     monospace;
 }
 
-.swiperNext, .swiperPrevious {
+.swiperNext,
+.swiperPrevious {
   position: absolute;
   display: flex;
   align-items: center;
@@ -23,6 +24,14 @@ code {
   height: 60px;
   width: 70px;
   font-size: 18px;
+}
+
+.backToModels {
+  top: 90vh;
+  opacity: 45%;
+}
+.backToModels:hover {
+  opacity: 100%;
 }
 
 .swiperNext {
@@ -43,4 +52,14 @@ code {
 .swiper-button-disabled {
   display: none;
   background-color: grey;
+}
+
+@media screen and (max-width: 769px) {
+  .swiperNext {
+    display: none;
+  }
+  
+  .swiperPrevious {
+    display: none;
+  }
 }
