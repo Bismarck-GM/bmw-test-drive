@@ -2,6 +2,7 @@ import {
   SNACKBAR_ERROR,
   SNACKBAR_CLEAR,
   SNACKBAR_SUCCESS,
+  SNACKBAR_INFO,
 } from '../actions/types';
 
 const initialState = {
@@ -25,6 +26,13 @@ const uiSnackbarReducer = (state = initialState, action) => {
         snackBarOpen: true,
         snackBarMessage: action.payload,
         snackBarType: 'error',
+      };
+    case SNACKBAR_INFO:
+      return {
+        ...state,
+        snackBarOpen: true,
+        snackBarMessage: action.payload,
+        snackBarType: 'info',
       };
     case SNACKBAR_CLEAR:
       return {
