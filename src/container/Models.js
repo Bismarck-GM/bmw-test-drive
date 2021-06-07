@@ -30,11 +30,9 @@ const Models = () => {
   const dispatch = useDispatch();
   const { cars, loading } = useSelector((state) => state.cars);
   const { carFamilies } = useSelector((state) => state.carFamily);
-  // const { drawerOpen } = useSelector((state) => state.uiDrawer);
   const classes = useStyles();
   const currentCars = cars.filter((car) => car.family[0].id === carFamilyIdParam);
   const currentFamily = carFamilies.filter((family) => family.id === carFamilyIdParam);
-  console.log(Array.isArray(currentFamily), currentFamily);
   React.useEffect(() => {
     if (loading) {
       console.log('Component did mount');
@@ -72,7 +70,6 @@ const Models = () => {
           <Paper
             key={car.id}
             className={classes.carHolder}
-            // variant="outlined"
             elevation={3}
           >
             <Box
