@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { GrCaretNext, GrCaretPrevious } from 'react-icons/gr';
-import { fetchCarFamilies } from '../redux/actions';
+import { fetchCarFamilies, fetchAllCars } from '../redux/actions';
 import 'swiper/swiper.min.css';
 import 'swiper/components/navigation/navigation.scss';
 
@@ -68,6 +68,7 @@ const CarFamily = () => {
   React.useEffect(() => {
     if (loading) {
       dispatch(fetchCarFamilies());
+      dispatch(fetchAllCars());
     }
   }, []);
 
