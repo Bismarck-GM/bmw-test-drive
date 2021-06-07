@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MuiModal from '@material-ui/core/Modal';
 import FormLogin from '../components/FormLogin';
 import FormRegister from '../components/FormRegister';
+import User from '../components/User';
 import { closeModal } from '../redux/actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -55,6 +56,19 @@ const Modal = () => {
         className={classes.modal}
       >
         <FormRegister />
+      </MuiModal>
+    );
+  }
+  if (modalFor === 'user') {
+    return (
+      <MuiModal
+        open={modalOpen}
+        onClose={() => dispatch(closeModal())}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        className={classes.modal}
+      >
+        <User />
       </MuiModal>
     );
   }
