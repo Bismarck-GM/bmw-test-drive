@@ -3,6 +3,8 @@ import Api, {
   REGISTER,
   GET_CARS,
   GET_CAR_FAMILIES,
+  GET_APPOINTMENTS,
+  setToken,
 } from '../../api';
 import * as types from './types';
 
@@ -10,6 +12,13 @@ export const createCars = (cars) => ({
   type: types.SET_CARS,
   payload: cars,
 });
+
+export const createAppointments = (appointments) => ({
+  type: types.SET_APPOINTMENTS,
+  payload: appointments,
+});
+
+export const deleteAllAppointments = () => ({ type: types.DELETE_ALL_APPOINTMENTS });
 
 export const createCarFamilies = (carFamily) => ({
   type: types.SET_CAR_FAMILIES,
@@ -26,6 +35,10 @@ export const toggleDrawer = () => ({ type: types.DRAWER_TOGGLE });
 export const loginUser = (data) => ({
   type: types.LOGIN_USER,
   payload: data,
+});
+
+export const logOutUser = () => ({
+  type: types.LOGOUT_USER,
 });
 
 export const openModal = (type) => ({
@@ -53,10 +66,19 @@ export const fetchCarFamilies = () => async (dispatch) => {
   }
 };
 
+export const fetchAppointments = () => async (dispatch) => {
+  try {
+    const { data } = await Api({ ...GET_APPOINTMENTS() });
+    console.log(data);
+    dispatch(createAppointments(data));
+  } catch (err) {
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
+  }
+};
+
 export const fetchAllCars = () => async (dispatch) => {
   try {
     const { data } = await Api({ ...GET_CARS() });
-    console.log(data);
     dispatch(createCars(data));
   } catch (err) {
     dispatch(snackBar(types.SNACKBAR_ERROR, 'Could not connect to back-end.'));
@@ -69,9 +91,10 @@ export const logIn = (formInputs) => async (dispatch) => {
     const { data } = await Api({ ...LOGIN(), data: { ...formInputs } });
     dispatch(loginUser(data));
     dispatch(snackBar(types.SNACKBAR_SUCCESS, `Welcome back ${data.username}.`));
+    window.localStorage.setItem('user', JSON.stringify(data));
+    setToken();
     dispatch(closeModal());
   } catch (err) {
-    console.log(err.response);
     dispatch(toggleFormLoading());
     dispatch(formError(err.response.data.error));
     dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
@@ -86,9 +109,17 @@ export const register = (formInputs) => async (dispatch) => {
     dispatch(snackBar(types.SNACKBAR_SUCCESS, `Welcome ${data.username}.`));
     dispatch(closeModal());
   } catch (err) {
-    console.log(err.response);
     dispatch(toggleFormLoading());
     dispatch(formError(err.response.data.error));
     dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
   }
+};
+
+export const logOut = () => (dispatch, getState) => {
+  const state = getState();
+  dispatch(closeModal());
+  dispatch(snackBar(types.SNACKBAR_INFO, `Logged out ${state.user.username} succesfuly.`));
+  dispatch(logOutUser());
+  dispatch(deleteAllAppointments());
+  window.localStorage.clear();
 };
