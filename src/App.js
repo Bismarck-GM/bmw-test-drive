@@ -76,6 +76,7 @@ const App = () => {
             <Route path="/models" exact component={CarFamily} />
             <Route path="/models/:carFamilyId" exact component={Models} />
             <Route path="/models/:carFamilyId/:carId" exact component={Car} />
+            {/* <Route path="/models/:carFamilyId/:carId" exact component={Car} /> */}
           </Main>
         </Switch>
         <Modal />
