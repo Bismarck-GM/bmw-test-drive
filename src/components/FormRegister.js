@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     padding: theme.spacing(2),
     borderRadius: '15px',
+    outline: 'none',
   },
   mLogo: {
     position: 'absolute',
