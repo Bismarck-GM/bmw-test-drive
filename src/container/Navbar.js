@@ -4,14 +4,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PersonIcon from '@material-ui/icons/Person';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Brightness4OutlinedIcon from '@material-ui/icons/Brightness4Outlined';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -26,21 +30,21 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   menuButton: {
-    position: 'absolute',
+    position: 'fixed',
     top: '30px',
-    left: '50px',
+    left: '20px',
     zIndex: '100',
   },
   menuButtonUser: {
-    position: 'absolute',
-    top: '30px',
-    left: '120px',
+    position: 'fixed',
+    top: '100px',
+    left: '20px',
     zIndex: '100',
   },
   menuButtonToggleTheme: {
-    position: 'absolute',
-    top: '30px',
-    left: '190px',
+    position: 'fixed',
+    top: '170px',
+    left: '20px',
     zIndex: '100',
   },
   hide: {
@@ -84,7 +88,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = ({ handleThemeChange }) => {
   const { drawerOpen } = useSelector((state) => state.uiDrawer);
+  const { username, loggedIn } = useSelector((state) => state.user);
   const classes = useStyles();
+  const mobile = useMediaQuery('(max-width:767)');
   const { pathname: location } = useLocation();
 
   const dispatch = useDispatch();
@@ -102,26 +108,39 @@ const Navbar = ({ handleThemeChange }) => {
           <MenuIcon fontSize="large" />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Open User" arrow>
-        <IconButton
-          color="inherit"
-          className={clsx(classes.menuButtonUser, drawerOpen && classes.hide)}
-        >
-          <AccountCircleIcon fontSize="large" />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Open User" arrow>
+      { loggedIn ? (
+        <Tooltip title={username} arrow>
+          <IconButton
+            color="inherit"
+            className={clsx(classes.menuButtonUser, drawerOpen && classes.hide)}
+            onClick={() => dispatch(openModal('user'))}
+          >
+            <PersonIcon fontSize="large" />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="LogIn" arrow>
+          <IconButton
+            color="inherit"
+            className={clsx(classes.menuButtonUser, drawerOpen && classes.hide)}
+            onClick={() => dispatch(openModal('login'))}
+          >
+            <AccountCircleIcon fontSize="large" />
+          </IconButton>
+        </Tooltip>
+      )}
+      <Tooltip title="Change Theme" arrow>
         <IconButton
           color="inherit"
           onClick={handleThemeChange}
           className={clsx(classes.menuButtonToggleTheme, drawerOpen && classes.hide)}
         >
-          <AccountCircleIcon fontSize="large" />
+          <Brightness4OutlinedIcon fontSize="large" />
         </IconButton>
       </Tooltip>
       <Drawer
         className={classes.drawer}
-        variant="persistent"
+        variant={mobile ? 'temporary' : 'persistent'}
         anchor="left"
         open={drawerOpen}
         classes={{
@@ -142,6 +161,19 @@ const Navbar = ({ handleThemeChange }) => {
             </IconButton>
           </div>
         </div>
+        {loggedIn ? (
+          <>
+            <Divider />
+            <List dense>
+              <ListItem button onClick={() => dispatch(openModal('user'))}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary={username} />
+              </ListItem>
+            </List>
+          </>
+        ) : ''}
         <Divider />
         <List className={classes.navList}>
           <Link to="/models" className={classes.link}>
@@ -166,12 +198,16 @@ const Navbar = ({ handleThemeChange }) => {
           </Link>
         </List>
         <Divider />
-        <Button onClick={() => dispatch(openModal('login'))} color="secondary">
-          Log In
-        </Button>
-        <Button onClick={() => dispatch(openModal('register'))} color="secondary">
-          Register
-        </Button>
+        { loggedIn ? '' : (
+          <>
+            <Button onClick={() => dispatch(openModal('login'))} color="secondary">
+              Log In
+            </Button>
+            <Button onClick={() => dispatch(openModal('register'))} color="secondary">
+              Register
+            </Button>
+          </>
+        )}
       </Drawer>
     </div>
   );
