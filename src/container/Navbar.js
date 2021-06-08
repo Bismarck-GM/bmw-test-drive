@@ -161,19 +161,6 @@ const Navbar = ({ handleThemeChange }) => {
             </IconButton>
           </div>
         </div>
-        {loggedIn ? (
-          <>
-            <Divider />
-            <List dense>
-              <ListItem button onClick={() => dispatch(openModal('user'))}>
-                <ListItemIcon>
-                  <PersonIcon />
-                </ListItemIcon>
-                <ListItemText primary={username} />
-              </ListItem>
-            </List>
-          </>
-        ) : ''}
         <Divider />
         <List className={classes.navList}>
           <Link to="/models" className={classes.link}>
@@ -198,7 +185,19 @@ const Navbar = ({ handleThemeChange }) => {
           </Link>
         </List>
         <Divider />
-        { loggedIn ? '' : (
+        { loggedIn ? (
+          <>
+            <Divider />
+            <List dense>
+              <ListItem button onClick={() => dispatch(openModal('user'))}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary={username} />
+              </ListItem>
+            </List>
+          </>
+        ) : (
           <>
             <Button onClick={() => dispatch(openModal('login'))} color="secondary">
               Log In

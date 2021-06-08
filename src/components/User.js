@@ -135,11 +135,21 @@ const User = React.forwardRef((_props, ref) => {
           ) : 'Theres no appointment set up yet.' }
         </Box>
       </Box>
-      <Box display="flex" justifyContent="flex-end" mt={3}>
-        <Button tabIndex={0} variant="outlined" color="secondary" onClick={() => dispatch(logOut())}>
+      <Box display="flex" flexDirection="column" mt={3} width="100%">
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginBottom: '10px' }}
+          onClick={() => dispatch(logOut())}
+        >
           Log out
         </Button>
-        <Button variant="outlined" color="primary">Delete Account</Button>
+        <Button
+          variant="contained"
+          color="primary"
+        >
+          Delete Account
+        </Button>
       </Box>
     </Container>
   );

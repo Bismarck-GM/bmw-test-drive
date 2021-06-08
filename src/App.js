@@ -12,7 +12,10 @@ import Models from './container/Models';
 import CarFamily from './container/CarFamily';
 import Car from './container/Car';
 import SnackBar from './components/SnackBar';
+import LifeStyle from './components/LifeStyle';
+import Shop from './components/Shop';
 import Modal from './container/Modal';
+import TestDrive from './container/TestDrive';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -76,7 +79,9 @@ const App = () => {
             <Route path="/models" exact component={CarFamily} />
             <Route path="/models/:carFamilyId" exact component={Models} />
             <Route path="/models/:carFamilyId/:carId" exact component={Car} />
-            {/* <Route path="/models/:carFamilyId/:carId" exact component={Car} /> */}
+            <Route path="/lifestyle" exact component={LifeStyle} />
+            <Route path="/shop" exact component={Shop} />
+            <Route path="/testdrive" exact component={TestDrive} />
           </Main>
         </Switch>
         <Modal />

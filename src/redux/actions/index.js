@@ -69,7 +69,6 @@ export const fetchCarFamilies = () => async (dispatch) => {
 export const fetchAppointments = () => async (dispatch) => {
   try {
     const { data } = await Api({ ...GET_APPOINTMENTS() });
-    console.log(data);
     dispatch(createAppointments(data));
   } catch (err) {
     dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
