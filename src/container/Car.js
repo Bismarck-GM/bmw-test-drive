@@ -119,8 +119,6 @@ const Models = () => {
         >
           <Box
             position="absolute"
-            // top={-8}
-            // pt={6}
             textAlign="center"
             justifySelf="flex-start"
             className={classes.title}
