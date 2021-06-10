@@ -43,7 +43,6 @@ const AppointmentsTable = ({ appointments }) => {
     dispatch(deleteAppointment(appointment.id));
     setOpen(false);
   };
-  console.log(appointments);
   if (appointments.length === 0) {
     return (
       <Box
@@ -86,7 +85,11 @@ const AppointmentsTable = ({ appointments }) => {
               <TableCell align="left">{appointment.dealership.name}</TableCell>
               <TableCell align="left">{appointment.dealership.address}</TableCell>
               <TableCell align="left">{appointment.car.name}</TableCell>
-              <TableCell align="left"><DeleteIcon onClick={() => handleOpen(appointment)} /></TableCell>
+              <TableCell align="left">
+                <Button onClick={() => handleOpen(appointment)}>
+                  <DeleteIcon />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
