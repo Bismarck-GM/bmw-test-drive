@@ -77,21 +77,7 @@ const User = React.forwardRef((_props, ref) => {
         <Box mb={1} fontSize={20} fontWeight={500} display="inline" textAlign="center">
           Curent scheduled Test-Drive appointments
         </Box>
-        <Box
-          mb={1}
-          fontSize="subtitle2"
-          fontWeight={100}
-          display="flex"
-          alignSelf="center"
-          flexDirection="column"
-          maxHeight="250px"
-          overflow="auto"
-          maxWidth="100%"
-        >
-          {appointments.length > 0 ? (
-            <AppointmentsTable appointments={appointments} />
-          ) : 'Theres no appointment set up yet.' }
-        </Box>
+        <AppointmentsTable appointments={appointments} />
       </Box>
       <Box display="flex" flexDirection="column" mt={3} width="100%">
         <Button
