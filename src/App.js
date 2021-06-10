@@ -6,6 +6,8 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import Main from './components/Main';
 import Navbar from './container/Navbar';
 import Models from './container/Models';
@@ -70,22 +72,24 @@ const App = () => {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <Navbar handleThemeChange={handleThemeChange} />
-        <Switch>
-          <Main>
-            <Route path="/" exact>
-              <Redirect to="/models" />
-            </Route>
-            <Route path="/models" exact component={CarFamily} />
-            <Route path="/models/:carFamilyId" exact component={Models} />
-            <Route path="/models/:carFamilyId/:carId" exact component={Car} />
-            <Route path="/lifestyle" exact component={LifeStyle} />
-            <Route path="/shop" exact component={Shop} />
-            <Route path="/testdrive" exact component={TestDrive} />
-          </Main>
-        </Switch>
-        <Modal />
-        <SnackBar />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Navbar handleThemeChange={handleThemeChange} />
+          <Switch>
+            <Main>
+              <Route path="/" exact>
+                <Redirect to="/models" />
+              </Route>
+              <Route path="/models" exact component={CarFamily} />
+              <Route path="/models/:carFamilyId" exact component={Models} />
+              <Route path="/models/:carFamilyId/:carId" exact component={Car} />
+              <Route path="/lifestyle" exact component={LifeStyle} />
+              <Route path="/shop" exact component={Shop} />
+              <Route path="/testdrive" exact component={TestDrive} />
+            </Main>
+          </Switch>
+          <Modal />
+          <SnackBar />
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     </Router>
   );
