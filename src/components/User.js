@@ -9,13 +9,7 @@ import { Box } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import AppointmentsTable from './AppointmentsTable';
 import { fetchAppointments, logOut } from '../redux/actions';
 import { ReactComponent as MLogo } from '../mlogo.svg';
 
@@ -56,11 +50,6 @@ const User = React.forwardRef((_props, ref) => {
     }
   }, []);
 
-  const normalizeDate = (apiDate) => {
-    const date = new Date(apiDate);
-    return date.toLocaleString();
-  };
-
   return (
     <Container tabIndex={-1} ref={ref} maxWidth="sm" className={classes.formContainer}>
       <MLogo className={classes.mLogo} />
@@ -68,10 +57,6 @@ const User = React.forwardRef((_props, ref) => {
         Account Settings
       </Typography>
       <Divider />
-      {/* <Typography variant="subtitle1" align="center" gutterBottom>
-        {`Username: ${username}`}
-        {`Email: ${email}`}
-      </Typography> */}
       <Box display="flex" justifyContent="space-between" pr={10} mt={6}>
         <Box mb={1} fontSize={20} fontWeight={500} display="inline">
           Username:
@@ -104,34 +89,7 @@ const User = React.forwardRef((_props, ref) => {
           maxWidth="100%"
         >
           {appointments.length > 0 ? (
-            <TableContainer component={Paper}>
-              <Table
-                size="small"
-                aria-label="a dense table"
-                stickyHeader
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Date</TableCell>
-                    <TableCell align="left">Where</TableCell>
-                    <TableCell align="left">Address</TableCell>
-                    <TableCell align="left">Car</TableCell>
-                    <TableCell align="left">#</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {appointments.map((appointment) => (
-                    <TableRow key={appointment.id}>
-                      <TableCell align="left">{normalizeDate(appointment.start_time)}</TableCell>
-                      <TableCell align="left">{appointment.dealership.name}</TableCell>
-                      <TableCell align="left">{appointment.dealership.address}</TableCell>
-                      <TableCell align="left">{appointment.car.name}</TableCell>
-                      <TableCell component="th" scope="row">{appointment.id}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <AppointmentsTable appointments={appointments} />
           ) : 'Theres no appointment set up yet.' }
         </Box>
       </Box>
@@ -147,6 +105,7 @@ const User = React.forwardRef((_props, ref) => {
         <Button
           variant="contained"
           color="primary"
+          disabled={username === 'demo_user'}
         >
           Delete Account
         </Button>
