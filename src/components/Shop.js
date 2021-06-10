@@ -7,6 +7,7 @@ import LifeStyleIMG from '../images/ShopIMG.png';
 
 const useStyles = makeStyles(() => ({
   container: {
+    backgroundColor: 'rgba(200,45,43, 0.5)',
     '&::after': {
       content: '""',
       position: 'fixed',
