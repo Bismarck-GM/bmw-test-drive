@@ -35,7 +35,6 @@ const Models = () => {
   const currentFamily = carFamilies.filter((family) => family.id === carFamilyIdParam);
   React.useEffect(() => {
     if (loading) {
-      console.log('Component did mount');
       dispatch(fetchCarFamilies());
       dispatch(fetchAllCars());
     }
