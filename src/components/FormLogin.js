@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { logIn, openModal } from '../redux/actions';
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     margin: theme.spacing(2, 0, 2, 0),
     '& button': {
-      margin: theme.spacing(4, 0, 2, 0),
+      margin: theme.spacing(4, 0, 1, 0),
     },
   },
   formContainer: {
@@ -131,6 +132,16 @@ const FormLogin = React.forwardRef((_props, ref) => {
           {formLoading ? (<CircularProgress color="secondary" />) : 'Sign in'}
         </Button>
       </form>
+      <Box width="100%" display="flex" justifyContent="center" mb={2}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => dispatch(logIn({ username: 'demo_user', password: '12345678' }))}
+          disabled={formLoading}
+        >
+          {formLoading ? (<CircularProgress color="secondary" />) : 'Sign in as Demo User'}
+        </Button>
+      </Box>
       <Typography variant="subtitle1" align="center" onClick={() => dispatch(openModal('register'))}>
         Not registered? Click here to register.
       </Typography>
