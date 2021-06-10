@@ -39,7 +39,7 @@ const Shop = () => {
       className={classes.container}
       fontSize={30}
     >
-      Work in progress...
+      COMMING SOON
     </Box>
   );
 };
