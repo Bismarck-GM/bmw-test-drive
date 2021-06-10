@@ -24,6 +24,8 @@ export const createAppointments = (appointments) => ({
 
 export const deleteAllAppointments = () => ({ type: types.DELETE_ALL_APPOINTMENTS });
 
+export const loadingAppointments = () => ({ type: types.LOADING_APPOINTMENTS });
+
 export const createCarFamilies = (carFamily) => ({
   type: types.SET_CAR_FAMILIES,
   payload: carFamily,
@@ -76,6 +78,7 @@ export const fetchCarFamilies = () => async (dispatch) => {
 };
 
 export const fetchAppointments = () => async (dispatch) => {
+  dispatch(loadingAppointments());
   try {
     const { data } = await Api({ ...GET_APPOINTMENTS() });
     data.sort((a, b) => {
@@ -85,7 +88,7 @@ export const fetchAppointments = () => async (dispatch) => {
     });
     dispatch(createAppointments(data));
   } catch (err) {
-    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error || 'Something went wrong.'));
   }
 };
 

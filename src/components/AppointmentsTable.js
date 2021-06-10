@@ -43,6 +43,7 @@ const AppointmentsTable = ({ appointments }) => {
     dispatch(deleteAppointment(appointment.id));
     setOpen(false);
   };
+  console.log(appointments);
   if (appointments.length === 0) {
     return (
       <Box

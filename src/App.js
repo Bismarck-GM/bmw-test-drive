@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,9 +20,12 @@ import Shop from './components/Shop';
 import Modal from './container/Modal';
 import TestDrive from './container/TestDrive';
 import { darkTheme, lightTheme } from './Theme';
+import { getUserFromLocal } from './api';
+import { loginUser } from './redux/actions';
 
 const App = () => {
   const [theme, setTheme] = useState(darkTheme);
+  const dispatch = useDispatch();
 
   const handleThemeChange = () => {
     if (theme.palette.type === 'dark') {
@@ -30,6 +34,13 @@ const App = () => {
       setTheme(darkTheme);
     }
   };
+
+  useEffect(() => {
+    const user = getUserFromLocal();
+    if (user) {
+      dispatch(loginUser(user));
+    }
+  }, []);
 
   return (
     <Router>

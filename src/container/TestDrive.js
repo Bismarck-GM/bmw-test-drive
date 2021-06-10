@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
 const TestDrive = () => {
   const { loggedIn } = useSelector((state) => state.user);
   const dealerships = useSelector((state) => state.dealerships);
-  const appointments = useSelector((state) => state.appointments);
+  const { appointments } = useSelector((state) => state.appointments);
   const { cars } = useSelector((state) => state.cars);
   const dispatch = useDispatch();
   const classes = useStyles();

@@ -13,6 +13,8 @@ export const saveUserToLocal = (userData) => {
   window.localStorage.setItem('user', JSON.stringify(userData));
 };
 
+export const getUserFromLocal = () => JSON.parse(window.localStorage.getItem('user'));
+
 export const setBearerToken = () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
   if (user) {

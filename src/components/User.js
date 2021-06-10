@@ -42,10 +42,10 @@ const User = React.forwardRef((_props, ref) => {
 
   const dispatch = useDispatch();
   const { username, email } = useSelector((state) => state.user);
-  const appointments = useSelector((state) => state.appointments);
+  const { appointments, loading } = useSelector((state) => state.appointments);
 
   React.useEffect(() => {
-    if (appointments.length === 0 && appointments.constructor === Array) {
+    if (appointments.length === 0 && appointments.constructor === Array && !loading) {
       dispatch(fetchAppointments());
     }
   }, []);
