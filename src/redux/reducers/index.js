@@ -7,6 +7,7 @@ import uiModalReducer from './uiModal';
 import carReducer from './car';
 import uiDrawerReducer from './uiDrawer';
 import appointmentsReducer from './appointments';
+import dealershipsReducer from './dealerships';
 
 const rootStore = combineReducers({
   admin: adminReducer,
@@ -17,6 +18,7 @@ const rootStore = combineReducers({
   uiDrawer: uiDrawerReducer,
   user: userReducer,
   appointments: appointmentsReducer,
+  dealerships: dealershipsReducer,
 });
 
 export default rootStore;

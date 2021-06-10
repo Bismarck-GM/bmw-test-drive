@@ -4,6 +4,8 @@ import Api, {
   GET_CARS,
   GET_CAR_FAMILIES,
   GET_APPOINTMENTS,
+  GET_DEALERSHIPS,
+  POST_APPOINTMENT,
   setToken,
 } from '../../api';
 import * as types from './types';
@@ -23,6 +25,11 @@ export const deleteAllAppointments = () => ({ type: types.DELETE_ALL_APPOINTMENT
 export const createCarFamilies = (carFamily) => ({
   type: types.SET_CAR_FAMILIES,
   payload: carFamily,
+});
+
+export const createDealerships = (dealerships) => ({
+  type: types.SET_DEALERSHIPS,
+  payload: dealerships,
 });
 
 export const snackBar = (type, message) => ({
@@ -69,9 +76,28 @@ export const fetchCarFamilies = () => async (dispatch) => {
 export const fetchAppointments = () => async (dispatch) => {
   try {
     const { data } = await Api({ ...GET_APPOINTMENTS() });
+    data.sort((a, b) => {
+      if (a.start_time < b.start_time) { return -1; }
+      if (a.start_time > b.start_time) { return 1; }
+      return 0;
+    });
     dispatch(createAppointments(data));
   } catch (err) {
     dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
+  }
+};
+
+export const fetchDealerships = () => async (dispatch) => {
+  try {
+    const { data } = await Api({ ...GET_DEALERSHIPS() });
+    data.sort((a, b) => {
+      if (a.country < b.country) { return -1; }
+      if (a.country > b.country) { return 1; }
+      return 0;
+    });
+    dispatch(createDealerships(data));
+  } catch (err) {
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error || 'Couldn\'t connect to Back-end'));
   }
 };
 
@@ -96,7 +122,7 @@ export const logIn = (formInputs) => async (dispatch) => {
   } catch (err) {
     dispatch(toggleFormLoading());
     dispatch(formError(err.response.data.error));
-    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error || 'Couldn\'t connect to Back-end'));
   }
 };
 
@@ -110,7 +136,7 @@ export const register = (formInputs) => async (dispatch) => {
   } catch (err) {
     dispatch(toggleFormLoading());
     dispatch(formError(err.response.data.error));
-    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error || 'Couldn\'t connect to Back-end'));
   }
 };
 
@@ -121,4 +147,14 @@ export const logOut = () => (dispatch, getState) => {
   dispatch(logOutUser());
   dispatch(deleteAllAppointments());
   window.localStorage.clear();
+};
+
+export const createAppointment = (formInputs) => async (dispatch) => {
+  try {
+    await Api({ ...POST_APPOINTMENT(), data: { ...formInputs } });
+    dispatch(fetchAppointments());
+    dispatch(snackBar(types.SNACKBAR_SUCCESS, 'Appointment created.'));
+  } catch (err) {
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error || 'Couldn\'t connect to Back-end'));
+  }
 };
