@@ -5,20 +5,13 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-// import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import { DateTimePicker } from '@material-ui/pickers';
 import Divider from '@material-ui/core/Divider';
-import { add, set } from 'date-fns';
 import {
   fetchDealerships,
   fetchAllCars,
   fetchAppointments,
-  snackBar,
-  openModal,
-  createAppointment,
 } from '../redux/actions';
+import TestDriveForm from '../components/TestDriveForm';
 import AppointmentsTable from '../components/AppointmentsTable';
 import TestDriveBNG from '../images/TestDriveBNG.png';
 
@@ -26,6 +19,7 @@ const useStyles = makeStyles(() => ({
   container: {
     // backgroundColor: '#0066B1',
     backgroundColor: '#373485',
+    zIndex: '0',
     '&::after': {
       content: '""',
       position: 'fixed',
@@ -37,35 +31,12 @@ const useStyles = makeStyles(() => ({
       backgroundSize: '100%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'right bottom',
+      zIndex: '-1',
     },
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '50%',
-  },
-  select: {
-    width: '100%',
-  },
-  datePicker: {
-    width: '100%',
   },
 }));
 
 const TestDrive = () => {
-  const [country, setCountry] = React.useState('');
-  const [car, setCar] = React.useState('');
-  const [openCar, setOpenCar] = React.useState(false);
-  const [openCountry, setOpenCountry] = React.useState(false);
-  const [errorCountry, setErrorCountry] = React.useState(false);
-  const [errorCar, setErrorCar] = React.useState(false);
-  const [selectedDate, handleDateChange] = React.useState(
-    set(
-      add(new Date(), { days: 1 }), { hours: 9, minutes: 0 },
-    ),
-  );
   const { loggedIn } = useSelector((state) => state.user);
   const dealerships = useSelector((state) => state.dealerships);
   const appointments = useSelector((state) => state.appointments);
@@ -73,56 +44,7 @@ const TestDrive = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const handleChangeCountry = (event) => {
-    setCountry(event.target.value);
-    setErrorCountry(false);
-  };
-
-  const handleCloseCountry = () => {
-    setOpenCountry(false);
-  };
-
-  const handleChangeCar = (event) => {
-    setCar(event.target.value);
-    setErrorCar(false);
-  };
-
-  const handleCloseCar = () => {
-    setOpenCar(false);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const minutes = selectedDate.getMinutes();
-    if (!country) {
-      setErrorCountry(true);
-      return null;
-    }
-    if (!car) {
-      setErrorCar(true);
-      return null;
-    }
-    if (minutes === 0 || minutes === 30) {
-      if (!loggedIn) {
-        dispatch(openModal('login'));
-        dispatch(snackBar('SNACKBAR_ERROR', 'You must be logged in before booking an appointment.'));
-      } else {
-        const formInputs = {
-          start_time: selectedDate,
-          dealership_id: country,
-          car_id: car,
-        };
-        dispatch(createAppointment(formInputs));
-      }
-    } else {
-      dispatch(snackBar('SNACKBAR_ERROR', 'The minutes in DATE should be 00 or 30.'));
-      return null;
-    }
-    return null;
-  };
-
-  const maxDate = add(new Date(), { days: 60 });
-  const minDate = add(new Date(), { days: 1 });
+  const [showAppointments, setShowAppointments] = React.useState(false);
 
   React.useEffect(() => {
     if (dealerships.length <= 0) {
@@ -135,6 +57,7 @@ const TestDrive = () => {
       dispatch(fetchAppointments());
     }
   }, [loggedIn]);
+
   return (
     <Box
       p={8}
@@ -146,6 +69,7 @@ const TestDrive = () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      flexDirection="column"
       className={classes.container}
       color="white"
     >
@@ -179,103 +103,37 @@ const TestDrive = () => {
             <br />
             For Booking a Test-Drive please use the selector below.
           </Box>
-          <form onSubmit={(e) => handleSubmit(e)} className={classes.form}>
-            <Box
-              width="100%"
-              mb={2}
-            >
-              <TextField
-                select
-                id="demo-controlled-open-select"
-                label="Country"
-                open={openCountry}
-                onClose={handleCloseCountry}
-                value={country}
-                onChange={handleChangeCountry}
-                variant="filled"
-                className={classes.select}
-                error={errorCountry}
-              >
-                {dealerships.length <= 0 ? (
-                  <MenuItem value="">
-                    <em>Loading...</em>
-                  </MenuItem>
-                ) : (
-                  dealerships.map((dealership) => (
-                    <MenuItem
-                      key={dealership.id}
-                      value={dealership.id}
-                    >
-                      {dealership.country}
-                    </MenuItem>
-                  ))
-                )}
-              </TextField>
-            </Box>
-            <Box
-              width="100%"
-              mb={2}
-            >
-              <TextField
-                select
-                id="demo-controlled-open-select"
-                label="Car to Test"
-                open={openCar}
-                onClose={handleCloseCar}
-                value={car}
-                onChange={handleChangeCar}
-                variant="filled"
-                className={classes.select}
-                error={errorCar}
-              >
-                {cars.length <= 0 ? (
-                  <MenuItem value="">
-                    <em>Loading...</em>
-                  </MenuItem>
-                ) : (
-                  cars.map((car) => (
-                    <MenuItem
-                      key={car.id}
-                      value={car.id}
-                    >
-                      {car.name}
-                    </MenuItem>
-                  ))
-                )}
-              </TextField>
-            </Box>
-            <Box
-              width="100%"
-              mb={2}
-            >
-              <DateTimePicker
-                dateRangeIcon
-                maxDate={maxDate}
-                minDate={minDate}
-                minDateMessage="Appointments can be booked starting from tomorrow."
-                disablePast
-                value={selectedDate}
-                onChange={handleDateChange}
-                label="Pick a Date"
-                className={classes.datePicker}
-                inputVariant="filled"
-                minutesStep={30}
-              />
-            </Box>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Book Now
-            </Button>
-          </form>
+          {showAppointments ? (
+            <>
+              <Box mb={2}>
+                <Button onClick={() => setShowAppointments(false)} variant="contained" color="secondary">
+                  Back to form
+                </Button>
+              </Box>
+              <AppointmentsTable appointments={appointments} />
+            </>
+          ) : (
+            <TestDriveForm loggedIn={loggedIn} dealerships={dealerships} cars={cars} />
+          )}
         </Box>
       ) : (
         <Box maxWidth="80%">
+          <Box mb={2} color="secondary" textAlign="center" fontSize={25}>
+            You have exceeded the maximum appointments for this period of time.
+          </Box>
+          <Box mb={2} color="secondary" textAlign="center" fontSize={15}>
+            Current appointments:
+          </Box>
           <AppointmentsTable appointments={appointments} />
         </Box>
       )}
+      {appointments.length > 0 && !showAppointments ? (
+        <Box my={2}>
+          <Button onClick={() => setShowAppointments(true)} variant="contained" color="secondary">
+            Show Appointments
+          </Button>
+        </Box>
+      ) : null}
     </Box>
   );
 };
