@@ -92,7 +92,7 @@ const CarFamily = () => {
             prevEl: '.swiperPrevious',
           }}
           breakpoints={{
-            769: {
+            1025: {
               slidesPerView: 2,
               spaceBetween: 20,
             },
