@@ -95,6 +95,10 @@ const Navbar = ({ handleThemeChange }) => {
 
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+
+  }, [loggedIn]);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
