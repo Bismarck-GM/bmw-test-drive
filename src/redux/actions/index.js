@@ -6,7 +6,9 @@ import Api, {
   GET_APPOINTMENTS,
   GET_DEALERSHIPS,
   POST_APPOINTMENT,
-  setToken,
+  saveUserToLocal,
+  setBearerToken,
+  DELETE_APPOINTMENT,
 } from '../../api';
 import * as types from './types';
 
@@ -87,6 +89,16 @@ export const fetchAppointments = () => async (dispatch) => {
   }
 };
 
+export const deleteAppointment = (id) => async (dispatch) => {
+  try {
+    const { data } = await Api({ ...DELETE_APPOINTMENT(), data: { id } });
+    dispatch(snackBar(types.SNACKBAR_INFO, data.info));
+    dispatch(fetchAppointments());
+  } catch (err) {
+    dispatch(snackBar(types.SNACKBAR_ERROR, err.response.data.error));
+  }
+};
+
 export const fetchDealerships = () => async (dispatch) => {
   try {
     const { data } = await Api({ ...GET_DEALERSHIPS() });
@@ -114,10 +126,10 @@ export const logIn = (formInputs) => async (dispatch) => {
   dispatch(toggleFormLoading());
   try {
     const { data } = await Api({ ...LOGIN(), data: { ...formInputs } });
+    saveUserToLocal(data);
+    setBearerToken();
     dispatch(loginUser(data));
     dispatch(snackBar(types.SNACKBAR_SUCCESS, `Welcome back ${data.username}.`));
-    window.localStorage.setItem('user', JSON.stringify(data));
-    setToken();
     dispatch(closeModal());
   } catch (err) {
     dispatch(toggleFormLoading());
@@ -130,6 +142,8 @@ export const register = (formInputs) => async (dispatch) => {
   dispatch(toggleFormLoading());
   try {
     const { data } = await Api({ ...REGISTER(), data: { ...formInputs } });
+    saveUserToLocal(data);
+    setBearerToken();
     dispatch(loginUser(data));
     dispatch(snackBar(types.SNACKBAR_SUCCESS, `Welcome ${data.username}.`));
     dispatch(closeModal());
@@ -147,6 +161,7 @@ export const logOut = () => (dispatch, getState) => {
   dispatch(logOutUser());
   dispatch(deleteAllAppointments());
   window.localStorage.clear();
+  setBearerToken();
 };
 
 export const createAppointment = (formInputs) => async (dispatch) => {
