@@ -9,13 +9,19 @@ const api = Axios.create({
   },
 });
 
-export const setToken = () => {
+export const saveUserToLocal = (userData) => {
+  window.localStorage.setItem('user', JSON.stringify(userData));
+};
+
+export const setBearerToken = () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
   if (user) {
     api.defaults.headers.common.Authorization = `Bearer ${user.token}`;
+  } else {
+    api.defaults.headers.common.Authorization = 'Bearer ';
   }
 };
 
-setToken();
+setBearerToken();
 
 export default api;
