@@ -43,7 +43,7 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
+    <Router basename="/bmw-test-drive">
       <ThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Navbar handleThemeChange={handleThemeChange} />

@@ -3,7 +3,7 @@ import Axios from 'axios';
 export * from './endpoints';
 
 const api = Axios.create({
-  baseURL: 'http://localhost:3000/api/v1/',
+  baseURL: 'https://bmw-test-drive.herokuapp.com/api/v1/',
   headers: {
     Accept: 'application/json',
   },
