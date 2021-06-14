@@ -1,4 +1,4 @@
-# The Food Compendium
+# BMW Test-Drive
 
 > React/Redux Project where I developed a website and an API to set up Appointments to test-drive a car. The app depends on https://github.com/Bismarck-GM/BMW-test-drive-backend/ API to work. 
 ## Features:
