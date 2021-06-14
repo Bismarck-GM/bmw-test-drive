@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
@@ -43,28 +42,26 @@ const App = () => {
   }, []);
 
   return (
-    <Router basename="/bmw-test-drive">
-      <ThemeProvider theme={theme}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Navbar handleThemeChange={handleThemeChange} />
-          <Switch>
-            <Main>
-              <Route path="/" exact>
-                <Redirect to="/models" />
-              </Route>
-              <Route path="/models" exact component={CarFamily} />
-              <Route path="/models/:carFamilyId" exact component={Models} />
-              <Route path="/models/:carFamilyId/:carId" exact component={Car} />
-              <Route path="/lifestyle" exact component={LifeStyle} />
-              <Route path="/shop" exact component={Shop} />
-              <Route path="/testdrive" exact component={TestDrive} />
-            </Main>
-          </Switch>
-          <Modal />
-          <SnackBar />
-        </MuiPickersUtilsProvider>
-      </ThemeProvider>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Navbar handleThemeChange={handleThemeChange} />
+        <Switch>
+          <Main>
+            <Route path="/" exact>
+              <Redirect to="/models" />
+            </Route>
+            <Route path="/models" exact component={CarFamily} />
+            <Route path="/models/:carFamilyId" exact component={Models} />
+            <Route path="/models/:carFamilyId/:carId" exact component={Car} />
+            <Route path="/lifestyle" exact component={LifeStyle} />
+            <Route path="/shop" exact component={Shop} />
+            <Route path="/testdrive" exact component={TestDrive} />
+          </Main>
+        </Switch>
+        <Modal />
+        <SnackBar />
+      </MuiPickersUtilsProvider>
+    </ThemeProvider>
   );
 };
 
