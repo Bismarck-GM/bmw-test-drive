@@ -1,44 +1,105 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# The Food Compendium
 
-## Available Scripts
+> React/Redux Project where I developed a website and an API to set up Appointments to test-drive a car. The app depends on https://github.com/Bismarck-GM/BMW-test-drive-backend/ API to work. 
+## Features:
 
-In the project directory, you can run:
+### The website works both in Table-sized and Desktop-sized displays. There's no current Mobile version for it.
 
-### `yarn start`
+Main Pages - Login In - Setting an Appointment          |
+:-------------------------:                             |
+![Desktop](./Appointments.gif)                          |
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Models Page - Color Switch         |
+:-------------------------:        |
+![Desktop](./MainThemeChange.gif)  |
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+360° Showcase                      |
+:-------------------------:        |
+![Desktop](./360Feature.gif)  |
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Live Demo:
 
-### `yarn build`
+#### [BMW Test-Drive - REACT - deployed in GitHubPages - Click Here](https://bismarck-gm.github.io/BMW-test-drive/)
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Built With
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- JavaScript (ES6)
+- React.JS
+- Redux
+- Thunk
+- Axios
+- React-router
+- Node.js
+- prop-types
+- Material-UI
+- DateFNS
+- SwiperJS
+- Jest
+- React Testing Library
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `yarn eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Node.js
+- Any Browser
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To get started open the directory where you will save this repo by typing on your terminal:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+$ cd <directory>
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Clone the repo typing:
 
-## Learn More
+```
+$ git clone git@github.com:Bismarck-GM/BMW-test-drive.git
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Install dependencies:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+After cloning move into the recently created folder (BMW-test-drive) and run
+
+```
+$ npm install
+```
+
+### Usage
+
+Start the React server:
+
+```
+$ npm start
+```
+
+A new browser tab/window will open up after the server is initiated.
+
+Redux Toolkit is running. You can check the Actions by using Redux DevTools in Chrome/Firefox.
+### Testing
+
+To run the test simply run:
+
+```
+$ npm run test
+```
+## Author
+
+👤 **Gerónimo Morisot**
+
+- Github: [@Bismarck-GM](https://github.com/Bismarck-GM)
+- Twitter: [@Rewritablee](https://twitter.com/Rewritablee)
+- LinkedIn: [Geronimo Morisot](https://linkedin.com/in/geronimomorisot)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+## Show your support
+
+Give a ⭐️ if you like this project!
+Feel free to check the [issues page](issues/).
+
+## 📝 License
+
+This project is [MIT](lic.url) licensed.
