@@ -20,7 +20,7 @@ Models Page - Color Switch         |
 
 ## Live Demo:
 
-#### [BMW Test-Drive - REACT - deployed in GitHubPages - Click Here](https://bismarck-gm.github.io/BMW-test-drive/)
+#### [BMW Test-Drive - REACT - deployed in GitHubPages - Click Here](https://bismarck-gm.github.io/bmw-test-drive/)
 
 ## Built With
 
