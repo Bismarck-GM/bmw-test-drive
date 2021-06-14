@@ -35,6 +35,7 @@ Models Page - Color Switch         |
 - Material-UI
 - DateFNS
 - SwiperJS
+- TRIDI
 - Jest
 - React Testing Library
 
